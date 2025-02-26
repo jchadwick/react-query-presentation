@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>React Query for Senior Engineers</title>
+    <link rel="stylesheet" href="/node_modules/reveal.js/dist/reset.css" />
+    <link rel="stylesheet" href="/node_modules/reveal.js/dist/reveal.css" />
+    <link id="theme" rel="stylesheet" href="/node_modules/reveal.js/dist/theme/simple.css" />
+    <link rel="stylesheet" href="/css/themes/xcode.css" />
+    <link rel="stylesheet" href="/css/jchadwick.css" />
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section title="title">
+                <div class="flex flex-column r-stretch justify-between py-2">
+                    <h1>TanStack Query <div class="italic" style="font-size: 3rem;">(nee React Query)</div>
+                    </h1>
+
+                </div>
+            </section>
+
+            <section id="what-is-tanstack-query">
+                <div class="flex flex-column r-stretch py-2">
+                    <h2>What is TanStack Query?</h2>
+                    <h3 class="fragment fade-in italic py-1">"The missing <strong>data-fetching library</strong> for web
+                        applications"</h3>
+                    <h4 class="fragment fade-in italic py-1">
+                        "It makes fetching, caching, synchronizing and updating <br /><strong>server state</strong> in
+                        your
+                        web applications a breeze."
+                        </b>
+                </div>
+            </section>
+
+            <section id="challenges">
+                <h2 class="font-md">Challenges with Server Data</h2>
+                <ul class="font-sm">
+                    <li class="fragment">Caching... (possibly the hardest thing to do in programming)</li>
+                    <li class="fragment">Deduping multiple requests for the same data into a single request</li>
+                    <li class="fragment">Updating "out of date" data in the background</li>
+                    <li class="fragment">Knowing when data is "out of date"</li>
+                    <li class="fragment">Reflecting updates to data as quickly as possible</li>
+                    <li class="fragment">Performance optimizations like pagination and lazy loading data</li>
+                    <li class="fragment">Managing memory and garbage collection of server state</li>
+                    <li class="fragment">Memoizing query results with structural sharing</li>
+                </ul>
+            </section>
+
+            <section id="core-concepts">
+                <h2>Core Concepts</h2>
+                <ul>
+                    <li><code>useQuery</code> - Fetch and cache data</li>
+                    <li><code>useMutation</code> - Modify server data</li>
+                    <li>Query invalidation & refetching</li>
+                    <li>Stale time vs cache time</li>
+                </ul>
+            </section>
+
+            <section id="useQuery">
+                <section id="useQuery-basic" data-auto-animate>
+                    <h2 data-id="title">Fetching Data</h2>
+                    <pre data-id="useQuery-example">
+                    <code class="language-typescript font-md" data-trim data-line-numbers data-no-escape>
+                        import { useQuery } from '@tanstack/react-query';
+
+                        function fetchPosts (): Promise&lt;Post[]> { return posts }
+
+                        const query = useQuery(['posts'], fetchPosts);
+
+                        console.log(query.data);
+                    </code></pre>
+                </section>
+                <section id="useQuery-full" data-auto-animate>
+                    <h2 data-id="title">
+                        <ref>useQuery</ref> Example
+                    </h2>
+                    <pre data-id="useQuery-example">
+                    <code class="language-typescript font-md" data-trim data-line-numbers="4-7|9|10|14-16" data-no-escape>
+                        import { useQuery } from '@tanstack/react-query';
+
+                        function PostList() {
+                            const { data, error, isLoading } = useQuery({
+                                queryKey: ['posts'], 
+                                queryFn: fetchPosts
+                            });
+
+                            if(isLoading) return &lt;LoadingSpinner />;
+                            if(error) return &lt;ErrorMessage error={error.message} />;
+
+                            return (
+                                <ul>
+                                    {data?.map(post => (
+                                        <li key={post.id}>{post.title}</li>
+                                    ))}
+                                </ul>
+                            );
+                        }
+                    </code></pre>
+                </section>
+            </section>
+
+            <section id="useMutation">
+                <section id="useMutation-basic" data-auto-animate>
+                    <h2 data-id="title">Updating Data <br /><small class="italic">(aka "Mutations")</small></h2>
+                    <pre data-id="demo">
+                    <code class="language-typescript font-md" data-trim data-line-numbers data-no-escape>
+                        const addPostMutation = useMutation(
+                            newPost => axios.post('/posts', newPost)
+                        );
+
+                        // sync
+                        addPostMutation.mutate({ title: 'Ultimate TanStack Query Guide' });
+
+                        // or async
+                        await addPostMutation.mutateAsync({ title: 'Ultimate TanStack Query Guide' });
+                    </code></pre>
+                </section>
+                <section id="useMutation-full" data-auto-animate>
+                    <h2 data-id="title">
+                        <ref>useMutation</ref> Example
+                    </h2>
+                    <pre data-id="demo" class="r-stretch">
+                    <code class="language-typescript font-md" data-trim data-line-numbers="2-5,10-18" data-no-escape>
+                        function AddPostForm() {
+                            const addPostMutation = useMutation(
+                                (newPost: NewPost) => axios.post('/posts', newPost).then(res => res.data)
+                            );
+
+                            const handleSubmit = async (e) => {
+                                e.preventDefault();
+                                const title = e.target.title.value;
+
+                                try {
+                                    // create the new post (await the response)
+                                    const newPost = await addPostMutation.mutateAsync({ title });
+                                    
+                                    // redirect to the new post page
+                                    window.location = `/posts/${newPost.id}`;
+                                } catch(ex) {
+                                    alert("Unable to create post!");
+                                }
+                            };
+
+                            return (
+                                <form onSubmit={handleSubmit}>
+                                    <input type="text" name="title" />
+                                    <button type="submit">Add Post</button>
+                                </form>
+                            );
+                        }
+                    </code></pre>
+                </section>
+            </section>
+
+            <section id="advanced">
+                <h2>Advanced Features</h2>
+                <ul>
+                    <li>Dependent Queries</li>
+                    <li>Infinite Queries & Pagination</li>
+                    <li>Background Refetching</li>
+                    <li>Optimistic Updates</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Dependent Queries</h2>
+                <pre>
+                <code class="javascript">
+                    const { data: user } = useQuery(['user', userId], fetchUser);
+                    const { data: posts } = useQuery(['posts', user?.id], fetchPosts, {
+                        enabled: !!user?.id,
+                    });
+                </code></pre>
+                <ul>
+                    <li>Fetches posts only after user data is available</li>
+                    <li>Uses <code>enabled</code> option to prevent unnecessary requests</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Infinite Queries & Pagination</h2>
+                <pre><code class="javascript">const { data, fetchNextPage } = useInfiniteQuery('projects', fetchProjects, {
+    getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
+});</code></pre>
+                <ul>
+                    <li>Efficiently loads more data as needed</li>
+                    <li>Handles pagination seamlessly</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Background Refetching</h2>
+                <pre><code class="javascript">const { data } = useQuery('notifications', fetchNotifications, {
+    refetchInterval: 60000,
+});</code></pre>
+                <ul>
+                    <li>Automatically refetches data every 60 seconds</li>
+                    <li>Keeps UI updated without manual intervention</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Optimistic Updates</h2>
+                <pre><code class="javascript">
+const mutation = useMutation(
+  updatePost, 
+  {
+    onMutate: async newPost => {
+        await client.cancelQueries('posts');
+        const previousPosts = client.getQueryData('posts');
+        client.setQueryData('posts', old => [...old, newPost]);
+        return { previousPosts };
+    },
+    onError: (err, newPost, context) => 
+        client.setQueryData('posts', context.previousPosts),
+    onSettled: () => client.invalidateQueries('posts')
+  }
+);</code></pre>
+                <ul>
+                    <li>Updates UI immediately before the API call succeeds</li>
+                    <li>Rolls back if the mutation fails</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Performance Optimizations</h2>
+                <ul>
+                    <li>Use <code>staleTime</code> to avoid unnecessary refetching</li>
+                    <li>Use <code>queryClient.setQueryData</code> for local updates</li>
+                    <li>Batch updates to avoid excessive re-renders</li>
+                </ul>
+            </section>
+
+            <section id="common-mistakes">
+                <section>
+                    <h2>Common Mistakes</h2>
+                    <ul>
+                        <li>Confusing <code>staleTime</code> and <code>cacheTime</code></li>
+                        <li>Over-fetching data</li>
+                        <li>Not properly handling query keys</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Confusing Stale Time and Cache Time</h2>
+                    <pre><code class="javascript">useQuery('data', fetchData, { staleTime: 5000, cacheTime: 30000 });</code></pre>
+                    <p><strong>Presenter Notes:</strong></p>
+                    <aside class="notes">
+                        Many developers confuse <code>staleTime</code> and <code>cacheTime</code>.
+                        <code>staleTime</code>
+                        controls when data becomes stale and triggers a refetch when accessed.
+                        <code>cacheTime</code> defines how long inactive data stays in memory before being garbage
+                        collected.
+                        Setting a low <code>staleTime</code> can lead to unnecessary refetching, while a high
+                        <code>cacheTime</code> can keep outdated data longer than needed.
+                    </aside>
+                </section>
+
+                <section>
+                    <h2>Over-Fetching Data</h2>
+                    <pre><code class="javascript">useQuery(['users', userId], () => fetchUserData(userId));</code></pre>
+                    <aside class="notes">
+                        Over-fetching occurs when queries fetch more data than necessary or refetch too frequently.
+                        Ensure that queries are optimized with proper keys and conditions.
+                        For example, using query keys effectively and leveraging pagination or infinite queries can
+                        prevent unnecessary large data loads.
+                    </aside>
+                </section>
+
+                <section>
+                    <h2>Not Properly Handling Query Keys</h2>
+                    <pre><code class="javascript">useQuery('user', fetchUser); // Bad example - lacks unique key</code></pre>
+                    <pre><code class="javascript">useQuery(['user', userId], () => fetchUser(userId)); // Good practice</code></pre>
+                    <aside class="notes">
+                        Using a generic query key like <code>'user'</code> means that React Query does not differentiate
+                        between different users.
+                        Instead, use dynamic query keys like <code>['user', userId]</code> to ensure each user's data is
+                        managed separately.
+                        This prevents unnecessary cache invalidation and ensures efficient data handling.
+                    </aside>
+                </section>
+            </section>
+        </div>
+    </div>
+
+    <script src="/node_modules/reveal.js/dist/reveal.js"></script>
+    <script src="/node_modules/reveal.js/plugin/notes/notes.js"></script>
+    <script src="/node_modules/reveal.js/plugin/markdown/markdown.js"></script>
+    <script src="/node_modules/reveal.js/plugin/highlight/highlight.js"></script>
+    <script>
+        document.querySelectorAll(".section-header").forEach(x => x.setAttribute("data-background", "dodgerblue"))
+
+        Reveal.initialize({
+            hash: true,
+            plugins: [
+                RevealMarkdown,
+                RevealHighlight,
+                RevealNotes,
+            ],
+        });
+    </script>
+</body>
+
+</html>
