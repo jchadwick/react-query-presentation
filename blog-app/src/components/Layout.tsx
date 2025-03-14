@@ -1,4 +1,4 @@
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet } from "react-router-dom";
 
 const Layout = () => {
   return (
@@ -23,9 +23,26 @@ const Layout = () => {
       </main>
       <footer className="mt-12 pt-4 border-t border-gray-200 text-center text-gray-500">
         <p>React Query Blog Demo &copy; {new Date().getFullYear()}</p>
+        <ClearCacheButton />
       </footer>
     </div>
   );
 };
+
+function ClearCacheButton() {
+  const clearCache = () => {
+    localStorage.clear();
+    window.location.reload();
+  };
+  return (
+    <a
+      href="#"
+      onClick={clearCache}
+      className="text-blue-600 hover:text-blue-800"
+    >
+      Clear Cache
+    </a>
+  );
+}
 
 export default Layout;

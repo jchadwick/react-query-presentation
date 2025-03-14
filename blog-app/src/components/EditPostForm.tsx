@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { fetchPost, updatePost } from '../api/postsApi';
-import { Post } from '../api/types';
+import { Post } from '../api/model';
 
 const EditPostForm = () => {
   const { id } = useParams<{ id: string }>();

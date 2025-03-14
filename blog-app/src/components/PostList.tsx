@@ -1,12 +1,16 @@
-import { useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
-import { fetchPosts } from '../api/postsApi';
+import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
+import { fetchPosts } from "../api/postsApi";
 
 const PostList = () => {
   // Using useQuery to fetch posts
-  const { data: posts, error, isLoading } = useQuery({
-    queryKey: ['posts'],
-    queryFn: fetchPosts
+  const {
+    data: posts,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ["posts"],
+    queryFn: fetchPosts,
   });
 
   if (isLoading) {
@@ -20,7 +24,10 @@ const PostList = () => {
   if (error) {
     return (
       <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-        <p>Error loading posts: {error instanceof Error ? error.message : 'Unknown error'}</p>
+        <p>
+          Error loading posts:{" "}
+          {error instanceof Error ? error.message : "Unknown error"}
+        </p>
       </div>
     );
   }
@@ -31,9 +38,15 @@ const PostList = () => {
       {posts && posts.length > 0 ? (
         <div className="space-y-6">
           {posts.map((post) => (
-            <div key={post.id} className="border border-gray-200 p-4 rounded shadow-sm hover:shadow-md transition-shadow">
+            <div
+              key={post.id}
+              className="border border-gray-200 p-4 rounded shadow-sm hover:shadow-md transition-shadow"
+            >
               <h3 className="text-xl font-semibold mb-2">
-                <Link to={`/posts/${post.id}`} className="text-blue-600 hover:text-blue-800">
+                <Link
+                  to={`/posts/${post.id}`}
+                  className="text-blue-600 hover:text-blue-800"
+                >
                   {post.title}
                 </Link>
               </h3>
@@ -61,7 +74,10 @@ const PostList = () => {
       ) : (
         <div className="text-center py-8 text-gray-500">
           <p>No posts found. Create your first post!</p>
-          <Link to="/posts/new" className="text-blue-600 hover:text-blue-800 mt-2 inline-block">
+          <Link
+            to="/posts/new"
+            className="text-blue-600 hover:text-blue-800 mt-2 inline-block"
+          >
             Add New Post
           </Link>
         </div>

@@ -17,9 +17,9 @@
         <div class="slides">
             <section title="title">
                 <div class="flex flex-column r-stretch justify-between py-2">
-                    <h1>TanStack Query <div class="italic" style="font-size: 3rem;">(nee React Query)</div>
-                    </h1>
-
+                    <h2>Simplify Your Data With TanStack Query</h2>
+                    <div>Powerful asynchronous state management for TS/JS, React, Solid, Vue, Svelte and Angular</div>
+                    <div class="font-sm italic fragment">I'll be showing the React version, aka React Query</div>
                 </div>
             </section>
 
@@ -37,7 +37,7 @@
             </section>
 
             <section id="challenges">
-                <h2 class="font-md">Challenges with Server Data</h2>
+                <h2>Challenges with Server Data</h2>
                 <ul class="font-sm">
                     <li class="fragment">Caching... (possibly the hardest thing to do in programming)</li>
                     <li class="fragment">Deduping multiple requests for the same data into a single request</li>
@@ -50,21 +50,11 @@
                 </ul>
             </section>
 
-            <section id="core-concepts">
-                <h2>Core Concepts</h2>
-                <ul>
-                    <li><code>useQuery</code> - Fetch and cache data</li>
-                    <li><code>useMutation</code> - Modify server data</li>
-                    <li>Query invalidation & refetching</li>
-                    <li>Stale time vs cache time</li>
-                </ul>
-            </section>
-
             <section id="useQuery">
                 <section id="useQuery-basic" data-auto-animate>
                     <h2 data-id="title">Fetching Data</h2>
                     <pre data-id="useQuery-example">
-                    <code class="language-typescript font-md" data-trim data-line-numbers data-no-escape>
+                    <code class="language-typescript" data-trim data-line-numbers data-no-escape>
                         import { useQuery } from '@tanstack/react-query';
 
                         function fetchPosts (): Promise&lt;Post[]> { return posts }
@@ -101,13 +91,67 @@
                         }
                     </code></pre>
                 </section>
+
+                <section id="about-queryKeys" data-auto-animate>
+                    <h2 data-id="title">
+                        <ref>useQuery</ref> Query Keys
+                    </h2>
+                    <pre data-id="demo">
+                        <code class="language-typescript" data-trim data-line-numbers="2" data-no-escape>
+                            useQuery({
+                                queryKey: ['user', userId], 
+                                queryFn: fetchUser
+                            });
+                        </code></pre>
+                    <ul class="font-md">
+                        <li>Unique identifier for a query <span class="italic">(and the cached data for that
+                                query)</span></li>
+                        <li>String value or - preferably - an array of strings and numbers</li>
+
+                    </ul>
+                </section>
+
+                <section id="queryKeys-hierarchy" data-auto-animate>
+                    <h2 data-id="title">
+                        <ref>useQuery</ref> Query Keys
+                    </h2>
+                    <pre data-id="demo">
+                        <code class="language-typescript font-md" data-trim data-line-numbers data-no-escape>
+                            useQuery({ queryKey: ['user', userId], ...
+                            useQuery({ queryKey: ['user', userId, "avatar"], ...
+                            useQuery({ queryKey: ['user', userId, "posts"], ...
+                            useQuery({ queryKey: ['user', userId, "comments"], ...
+
+                            // clear all data for user userId
+                            queryClient.invalidateQueries({ queryKey: ['user', userId] });
+                        </code></pre>
+                    <div>Query Key arrays are hierarchical, making it easy to invalidate/clear entire chunks of data
+                        at once</div>
+                </section>
+            </section>
+
+            <section id="dependent-queries">
+                <h2>Dependent Queries</h2>
+                <pre>
+                <code class="language-typescript font-md" data-trim data-line-numbers="1-4|6-10|9" data-no-escape>
+                    const { data: user } = useQuery({
+                        queryKey: ['usersByEmail', email], 
+                        queryFn: () => fetchUserByEmail(email)
+                    });
+
+                    const { data: posts } = useQuery({
+                        queryKey: ['users', user?.id, 'posts'], 
+                        queryFn: fetchPosts, 
+                        enabled: !!user?.id,
+                    });
+                </code></pre>
             </section>
 
             <section id="useMutation">
                 <section id="useMutation-basic" data-auto-animate>
                     <h2 data-id="title">Updating Data <br /><small class="italic">(aka "Mutations")</small></h2>
                     <pre data-id="demo">
-                    <code class="language-typescript font-md" data-trim data-line-numbers data-no-escape>
+                    <code class="language-typescript font-md" data-trim data-line-numbers="1-3|5-6|8-9" data-no-escape>
                         const addPostMutation = useMutation(
                             newPost => axios.post('/posts', newPost)
                         );
@@ -156,75 +200,107 @@
                 </section>
             </section>
 
-            <section id="advanced">
-                <h2>Advanced Features</h2>
-                <ul>
-                    <li>Dependent Queries</li>
-                    <li>Infinite Queries & Pagination</li>
-                    <li>Background Refetching</li>
-                    <li>Optimistic Updates</li>
-                </ul>
+            <section id="query-invalidation">
+                <section id="query-invalidation">
+                    <h2>Query Invalidation</h2>
+                    <pre>
+                    <code class="language-typescript font-md" data-trim data-line-numbers="1|3-4|6-7|9-10" data-no-escape>
+                        const queryClient = useQueryClient();
+
+                        // add/update posts
+                        await addPostMutation.mutateAsync({ title });
+
+                        // invalidate the posts query key to trigger a refetch (if needed)
+                        await queryClient.invalidateQueries(['posts']);
+
+                        // or, explictly refetch the posts query
+                        await queryClient.refetchQueries({ queryKey: ['posts'] });
+                    </code></pre>
+                </section>
+                <section id="query-automatic-refetching">
+                    <h2>Automatic Refetching (polling)</h2>
+                    <pre>
+                    <code class="language-typescript font-md" data-trim data-line-numbers="4" data-no-escape>
+                        const { data } = useQuery({
+                            queryKey: ['posts'],
+                            queryFn: fetchPosts,
+                            refetchInterval: 60000,
+                        });
+                    </code></pre>
+                </section>
             </section>
 
-            <section>
-                <h2>Dependent Queries</h2>
+            <section id="prefetching">
+                <h2>Prefetching</h2>
                 <pre>
-                <code class="javascript">
-                    const { data: user } = useQuery(['user', userId], fetchUser);
-                    const { data: posts } = useQuery(['posts', user?.id], fetchPosts, {
-                        enabled: !!user?.id,
+                    <code class="language-typescript" data-trim data-line-numbers data-no-escape>
+                        const queryClient = useQueryClient();
+                        queryClient.prefetchQuery({ queryKey: ['posts'] });
+                    </code>
+                </pre>
+            </section>
+
+            <section id="optimistic-updates">
+                <section id="optimistic-updates-basic" data-auto-animate>
+                    <h2 data-id="title">Optimistic Updates</h2>
+                    <ul class="font-sm">
+                        <li>Updates UI immediately before the API call succeeds</li>
+                        <li>Rolls back if the mutation fails</li>
+                    </ul>
+                    <pre data-id="demo"><code class="javascript font-md" data-trim data-line-numbers="2|3-8|9-12|13-16" data-no-escape>
+                    const mutation = useMutation({
+                        mutationFn: updatePost, 
+                        onMutate: async (newPost) => {
+                            // modify the cached data immediately
+                            // return the previous data so we can 
+                            // roll back if the mutation fails
+                            return { cachedPosts };
+                        },
+                        onError: (err, newPost, context) => {
+                            // roll back the previous cached data, 
+                            // available in context.cachedPosts
+                        },
+                        onSettled: () => {
+                            // trigger a refetch of the posts query 
+                            // to get the latest data from the server
+                        }
                     });
                 </code></pre>
-                <ul>
-                    <li>Fetches posts only after user data is available</li>
-                    <li>Uses <code>enabled</code> option to prevent unnecessary requests</li>
-                </ul>
+                </section>
+                <section id="optimistic-updates-advanced" data-auto-animate>
+                    <h2 data-id="title">Optimistic Updates</h2>
+                    <pre data-id="demo"><code class="javascript font-md" data-trim data-line-numbers="1|5|6|8-9|11-12|14-16|17-21|22-26"  data-no-escape>
+                    const client = useQueryClient();
+
+                    const mutation = useMutation({
+                        mutationFn: updatePost, 
+                        onMutate: async newPost => {
+                            await client.cancelQueries('posts');
+
+                            // get existing/cached data
+                            const previousPosts = client.getQueryData('posts');
+
+                            // add the new post to the existing data
+                            client.setQueryData('posts', old => [...old, newPost]);
+
+                            // return the previous data so we can 
+                            // roll back if the mutation fails
+                            return { previousPosts };
+                        },
+                        onError: (err, newPost, context) => {
+                            // roll back the previous cached data (as saved in the context)
+                            client.setQueryData('posts', context.previousPosts);
+                        },
+                        onSettled: () => {
+                            // trigger a refetch of the posts query to get the 
+                            // latest data from the server
+                            client.invalidateQueries('posts');
+                        }
+                    });
+                </code></pre>
+                </section>
             </section>
 
-            <section>
-                <h2>Infinite Queries & Pagination</h2>
-                <pre><code class="javascript">const { data, fetchNextPage } = useInfiniteQuery('projects', fetchProjects, {
-    getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
-});</code></pre>
-                <ul>
-                    <li>Efficiently loads more data as needed</li>
-                    <li>Handles pagination seamlessly</li>
-                </ul>
-            </section>
-
-            <section>
-                <h2>Background Refetching</h2>
-                <pre><code class="javascript">const { data } = useQuery('notifications', fetchNotifications, {
-    refetchInterval: 60000,
-});</code></pre>
-                <ul>
-                    <li>Automatically refetches data every 60 seconds</li>
-                    <li>Keeps UI updated without manual intervention</li>
-                </ul>
-            </section>
-
-            <section>
-                <h2>Optimistic Updates</h2>
-                <pre><code class="javascript">
-const mutation = useMutation(
-  updatePost, 
-  {
-    onMutate: async newPost => {
-        await client.cancelQueries('posts');
-        const previousPosts = client.getQueryData('posts');
-        client.setQueryData('posts', old => [...old, newPost]);
-        return { previousPosts };
-    },
-    onError: (err, newPost, context) => 
-        client.setQueryData('posts', context.previousPosts),
-    onSettled: () => client.invalidateQueries('posts')
-  }
-);</code></pre>
-                <ul>
-                    <li>Updates UI immediately before the API call succeeds</li>
-                    <li>Rolls back if the mutation fails</li>
-                </ul>
-            </section>
 
             <section>
                 <h2>Performance Optimizations</h2>

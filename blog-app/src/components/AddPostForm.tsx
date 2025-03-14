@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { createPost } from '../api/postsApi';
-import { NewPost } from '../api/types';
+import { NewPost } from '../api/model';
 
 const AddPostForm = () => {
   const [title, setTitle] = useState('');
