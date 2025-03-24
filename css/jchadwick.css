@@ -1,0 +1,135 @@
+li {
+  margin-bottom: 0.5em;
+}
+
+li ul li {
+  font-size: 70%;
+  margin-bottom: 0.1em;
+}
+
+li label {
+  font-weight: bolder;
+}
+
+.reveal li p {
+  font-size: 90%;
+  font-style: italic;
+  margin: 0;
+}
+
+ref {
+  font-family: "JetBrains Mono", Monaco, monospace;
+  font-size: 80%;
+  font-weight: 500;
+}
+
+th {
+  color: navy;
+}
+
+th.half {
+  width: 50%;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.grow {
+  flex-grow: 1;
+}
+
+.justify-center {
+  justify-content: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+
+.align-start {
+  align-items: flex-start;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.reveal .text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.p-1 {
+  padding: 1em;
+}
+
+.px-1 {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.py-1 {
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+.py-2 {
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+.mt-1 {
+  margin-top: 1em;
+}
+
+.mt-2 {
+  margin-top: 2em;
+}
+
+.mt-3 {
+  margin-top: 3em;
+}
+
+.bold {
+  font-weight: bolder;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.font-xxs {
+  font-size: 50% !important;
+}
+
+.font-sm {
+  font-size: 70% !important;
+}
+
+.font-md {
+  font-size: 80% !important;
+}
+
+code.font-md {
+  line-height: 1.2em;
+}
+
+.avatar {
+  border-radius: 50%;
+  height: 4em;
+}
+
+.section-header h2 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 4em;
+}
