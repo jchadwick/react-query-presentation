@@ -7,13 +7,13 @@ import {
   ActionIcon,
   Menu,
 } from "@mantine/core";
-import { Task } from "../types/types";
+import { Task, UpdatedTask } from "../types/types";
 import { format } from "date-fns";
 import { TaskStatusBadge } from "./TaskStatusBadge";
 
 interface TaskListProps {
   tasks: Task[];
-  onUpdateTask: (id: string, updates: Partial<Task>) => void;
+  onUpdateTask: (updated: UpdatedTask) => void;
   onDeleteTask: (id: string) => void;
 }
 
@@ -46,20 +46,20 @@ function TaskList({ tasks, onUpdateTask, onDeleteTask }: TaskListProps) {
                 <Menu.Dropdown>
                   <Menu.Label>Status</Menu.Label>
                   <Menu.Item
-                    onClick={() => onUpdateTask(task.id, { status: "pending" })}
+                    onClick={() => onUpdateTask({ ...task, status: "pending" })}
                   >
                     Set Pending
                   </Menu.Item>
                   <Menu.Item
                     onClick={() =>
-                      onUpdateTask(task.id, { status: "in_progress" })
+                      onUpdateTask({ ...task, status: "in_progress" })
                     }
                   >
                     Set In Progress
                   </Menu.Item>
                   <Menu.Item
                     onClick={() =>
-                      onUpdateTask(task.id, { status: "completed" })
+                      onUpdateTask({ ...task, status: "completed" })
                     }
                   >
                     Set Completed

@@ -49,11 +49,11 @@ function ProjectDetails({ projectId }: ProjectDetailsProps) {
     }
   };
 
-  const handleUpdateTask = async (id: string, updates: UpdatedTask) => {
+  const handleUpdateTask = async (updated: UpdatedTask) => {
     try {
-      const updatedTask = await api.updateTask(id, updates);
+      const updatedTask = await api.updateTask(updated.id, updated);
       setTasks((prev) =>
-        prev.map((task) => (task.id === id ? updatedTask : task))
+        prev.map((task) => (task.id === updated.id ? updatedTask : task))
       );
       onTaskUpdated(updatedTask);
     } catch (err) {

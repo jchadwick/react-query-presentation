@@ -19,4 +19,4 @@ export interface Task {
 }
 
 export type NewTask = Omit<Task, "id" | "createdAt" | "updatedAt">;
-export type UpdatedTask = Partial<NewTask>;
+export type UpdatedTask = Partial<NewTask> & { id: string };
