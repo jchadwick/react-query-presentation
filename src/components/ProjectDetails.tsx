@@ -22,8 +22,12 @@ function ProjectDetails({ projectId }: ProjectDetailsProps) {
     const fetchTasks = async () => {
       try {
         setIsLoading(true);
-        const tasks = await api.getTasks(projectId);
-        setTasks(tasks);
+
+        // only fetch tasks if projectId is valid
+        if (projectId) {
+          const tasks = await api.getTasks(projectId);
+          setTasks(tasks);
+        }
       } catch (err) {
         setError(err as Error);
       } finally {
