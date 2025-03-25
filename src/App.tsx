@@ -3,7 +3,7 @@ import { useState } from "react";
 import ProjectDetails from "./components/ProjectDetails";
 import ProjectList from "./components/ProjectList";
 import RecentTasksList from "./components/RecentTasksList";
-import { RecentTasksProvider } from "./contexts/RecentTasksContext";
+import { RecentTasksProvider } from "./contexts/RecentTasks";
 import { Project } from "./types";
 
 function App() {

@@ -1,11 +1,11 @@
 import { Group, Paper, Stack, Text } from "@mantine/core";
 import { formatDistanceToNow } from "date-fns";
-import { useRecentTasks } from "../contexts/RecentTasksContext";
-import { TaskStatusBadge } from "./TaskStatusBadge";
-import { Project, Task } from "../types";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as api from "../api";
+import { useRecentTasks } from "../contexts/RecentTasks";
+import { Project, Task } from "../types";
+import { TaskStatusBadge } from "./TaskStatusBadge";
+
 function RecentTasksList() {
   const { recentTasks } = useRecentTasks();
 
@@ -55,13 +55,7 @@ function RecentTask({ task }: { task: Task }) {
           })}
         </Text>
         {project && (
-          <Text
-            size="xs"
-            c="dimmed"
-            fw={500}
-            lineClamp={1}
-            truncate="end"
-          >
+          <Text size="xs" c="dimmed" fw={500} lineClamp={1} truncate="end">
             {project.name}
           </Text>
         )}

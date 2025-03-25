@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
-import { Title, Button, Group, Stack, Skeleton } from "@mantine/core";
-import { Task } from "../types";
+import { Button, Group, Skeleton, Stack, Title } from "@mantine/core";
+import { useEffect, useState } from "react";
 import * as api from "../api";
-import TaskList from "./TaskList";
+import { useRecentTasks } from "../contexts/RecentTasks";
+import { Task } from "../types";
 import TaskForm from "./TaskForm";
-import { useRecentTasks } from "../contexts/RecentTasksContext";
+import TaskList from "./TaskList";
 
 interface ProjectDetailsProps {
   projectId: string;
