@@ -6,7 +6,6 @@ import {
   Badge,
   ActionIcon,
   Menu,
-  Skeleton,
 } from "@mantine/core";
 import { Task } from "../types";
 import { format } from "date-fns";
@@ -14,27 +13,11 @@ import { TaskStatusBadge } from "./TaskStatusBadge";
 
 interface TaskListProps {
   tasks: Task[];
-  isLoading: boolean;
   onUpdateTask: (id: string, updates: Partial<Task>) => void;
   onDeleteTask: (id: string) => void;
 }
 
-function TaskList({
-  tasks,
-  isLoading,
-  onUpdateTask,
-  onDeleteTask,
-}: TaskListProps) {
-  if (isLoading) {
-    return (
-      <Stack mt="lg">
-        <Skeleton height={120} radius="md" />
-        <Skeleton height={120} radius="md" />
-        <Skeleton height={120} radius="md" />
-      </Stack>
-    );
-  }
-
+function TaskList({ tasks, onUpdateTask, onDeleteTask }: TaskListProps) {
   return (
     <Stack mt="lg">
       {tasks.map((task) => (

@@ -7,8 +7,18 @@
     },
     {
       "id": "2",
-      "name": "Mobile App Development",
+      "name": "Mobile App Development", 
       "description": "Build new mobile app"
+    },
+    {
+      "id": "3",
+      "name": "Data Analytics Platform",
+      "description": "Build analytics dashboard for business insights"
+    },
+    {
+      "id": "4",
+      "name": "E-commerce Integration",
+      "description": "Add online store functionality"
     }
   ],
   "tasks": [
@@ -17,7 +27,7 @@
       "projectId": "1",
       "title": "Design Homepage",
       "description": "Create new homepage mockup",
-      "status": "pending",
+      "status": "in_progress",
       "priority": "high",
       "createdAt": "2024-03-20T10:00:00Z"
     },
@@ -32,6 +42,15 @@
     },
     {
       "id": "3",
+      "projectId": "1",
+      "title": "Optimize Images",
+      "description": "Compress and optimize all website images",
+      "status": "pending",
+      "priority": "low",
+      "createdAt": "2024-03-21T09:00:00Z"
+    },
+    {
+      "id": "4",
       "projectId": "2",
       "title": "User Authentication",
       "description": "Implement login/signup flow",
@@ -40,13 +59,76 @@
       "createdAt": "2024-03-20T12:00:00Z"
     },
     {
-      "id": "4",
-      "projectId": "1",
-      "title": "New Awesome task",
-      "description": "This is really cool",
-      "priority": "low",
+      "id": "5",
+      "projectId": "2",
+      "title": "Push Notifications",
+      "description": "Implement push notification system",
       "status": "pending",
-      "createdAt": "2025-03-25T03:23:08.550Z"
+      "priority": "medium",
+      "createdAt": "2024-03-21T10:00:00Z"
+    },
+    {
+      "id": "6",
+      "projectId": "2",
+      "title": "Offline Mode",
+      "description": "Add offline functionality support",
+      "status": "pending",
+      "priority": "high",
+      "createdAt": "2024-03-21T11:00:00Z"
+    },
+    {
+      "id": "7",
+      "projectId": "3",
+      "title": "Design Dashboard",
+      "description": "Create dashboard wireframes",
+      "status": "pending",
+      "priority": "high",
+      "createdAt": "2024-03-22T09:00:00Z"
+    },
+    {
+      "id": "8",
+      "projectId": "3",
+      "title": "Data Pipeline",
+      "description": "Set up ETL pipeline",
+      "status": "in_progress",
+      "priority": "high",
+      "createdAt": "2024-03-22T10:00:00Z"
+    },
+    {
+      "id": "9",
+      "projectId": "3",
+      "title": "Implement Charts",
+      "description": "Add interactive charts and graphs",
+      "status": "in_progress",
+      "priority": "medium",
+      "createdAt": "2024-03-22T11:00:00Z"
+    },
+    {
+      "id": "10",
+      "projectId": "4",
+      "title": "Payment Gateway",
+      "description": "Integrate payment processing system",
+      "status": "pending",
+      "priority": "high",
+      "createdAt": "2024-03-23T09:00:00Z"
+    },
+    {
+      "id": "11",
+      "projectId": "4",
+      "title": "Shopping Cart",
+      "description": "Implement shopping cart functionality",
+      "status": "pending",
+      "priority": "high",
+      "createdAt": "2024-03-23T10:00:00Z"
+    },
+    {
+      "id": "12",
+      "projectId": "4",
+      "title": "Product Catalog",
+      "description": "Create product listing and management system",
+      "status": "pending",
+      "priority": "medium",
+      "createdAt": "2024-03-23T11:00:00Z"
     }
   ]
 }
