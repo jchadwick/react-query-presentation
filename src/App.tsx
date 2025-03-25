@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
 import { AppShell, Container, Grid, Title, Button, Group } from "@mantine/core";
-import { Project, Task } from "./types";
+import { Project, Task, NewTask, UpdatedTask } from "./types";
 import * as api from "./api";
 import ProjectList from "./components/ProjectList";
 import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
+import RecentTasksList from "./components/RecentTasksList";
+
+const MAX_RECENT_TASKS = 5;
 
 function App() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [recentTasks, setRecentTasks] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [showTaskForm, setShowTaskForm] = useState(false);
@@ -50,22 +54,33 @@ function App() {
     fetchTasks();
   }, [selectedProject]);
 
-  const handleCreateTask = async (newTask: Omit<Task, "id" | "createdAt">) => {
+  const addToRecentTasks = (task: Task) => {
+    setRecentTasks((prev) => {
+      // Remove the task if it's already in the list
+      const filtered = prev.filter((t) => t.id !== task.id);
+      // Add the task to the beginning and limit the list size
+      return [task, ...filtered].slice(0, MAX_RECENT_TASKS);
+    });
+  };
+
+  const handleCreateTask = async (newTask: NewTask) => {
     try {
       const createdTask = await api.createTask(newTask);
       setTasks((prev) => [...prev, createdTask]);
-      setShowTaskForm(false); // Hide form after successful creation
+      addToRecentTasks(createdTask);
+      setShowTaskForm(false);
     } catch (err) {
       setError(err as Error);
     }
   };
 
-  const handleUpdateTask = async (id: string, updates: Partial<Task>) => {
+  const handleUpdateTask = async (id: string, updates: UpdatedTask) => {
     try {
       const updatedTask = await api.updateTask(id, updates);
       setTasks((prev) =>
         prev.map((task) => (task.id === id ? updatedTask : task))
       );
+      addToRecentTasks(updatedTask);
     } catch (err) {
       setError(err as Error);
     }
@@ -100,7 +115,7 @@ function App() {
               isLoading={isLoading}
             />
           </Grid.Col>
-          <Grid.Col span={9}>
+          <Grid.Col span={6}>
             {selectedProject && (
               <>
                 <Group justify="space-between" mb="md">
@@ -126,6 +141,9 @@ function App() {
               </>
             )}
             {error && <div>Error: {error.message}</div>}
+          </Grid.Col>
+          <Grid.Col span={3}>
+            <RecentTasksList tasks={recentTasks} />
           </Grid.Col>
         </Grid>
       </Container>

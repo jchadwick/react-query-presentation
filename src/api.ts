@@ -1,11 +1,12 @@
 import axios from "axios";
-import { Project, Task } from "./types";
+import { NewTask, Project, Task, UpdatedTask } from "./types";
 
 const api = axios.create({
   baseURL: "http://localhost:3001",
 });
 
-const mimicLatency = (ms = 1500) => new Promise(resolve => setTimeout(resolve, ms));
+const mimicLatency = (ms = 1500) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
 export const getProjects = async (): Promise<Project[]> => {
   await mimicLatency();
@@ -27,23 +28,26 @@ export const getTasks = async (projectId: string): Promise<Task[]> => {
   return data;
 };
 
-export const createTask = async (
-  task: Omit<Task, "id" | "createdAt">
-): Promise<Task> => {
+export const createTask = async (task: NewTask): Promise<Task> => {
   await mimicLatency();
+  const now = new Date().toISOString();
   const { data } = await api.post("/tasks", {
     ...task,
-    createdAt: new Date().toISOString(),
+    createdAt: now,
+    updatedAt: now,
   });
   return data;
 };
 
 export const updateTask = async (
   id: string,
-  updates: Partial<Task>
+  updates: UpdatedTask
 ): Promise<Task> => {
   await mimicLatency();
-  const { data } = await api.patch(`/tasks/${id}`, updates);
+  const { data } = await api.patch(`/tasks/${id}`, {
+    ...updates,
+    updatedAt: new Date().toISOString(),
+  });
   return data;
 };
 

@@ -1,6 +1,16 @@
-import { Card, Stack, Text, Group, Badge, ActionIcon, Menu, Skeleton } from '@mantine/core';
-import { Task, TaskStatus } from '../types';
-import { format } from 'date-fns';
+import {
+  Card,
+  Stack,
+  Text,
+  Group,
+  Badge,
+  ActionIcon,
+  Menu,
+  Skeleton,
+} from "@mantine/core";
+import { Task } from "../types";
+import { format } from "date-fns";
+import { TaskStatusBadge } from "./TaskStatusBadge";
 
 interface TaskListProps {
   tasks: Task[];
@@ -9,13 +19,12 @@ interface TaskListProps {
   onDeleteTask: (id: string) => void;
 }
 
-const statusColors: Record<TaskStatus, string> = {
-  pending: 'yellow',
-  in_progress: 'blue',
-  completed: 'green',
-};
-
-function TaskList({ tasks, isLoading, onUpdateTask, onDeleteTask }: TaskListProps) {
+function TaskList({
+  tasks,
+  isLoading,
+  onUpdateTask,
+  onDeleteTask,
+}: TaskListProps) {
   if (isLoading) {
     return (
       <Stack mt="lg">
@@ -28,13 +37,23 @@ function TaskList({ tasks, isLoading, onUpdateTask, onDeleteTask }: TaskListProp
 
   return (
     <Stack mt="lg">
-      {tasks.map(task => (
+      {tasks.map((task) => (
         <Card key={task.id} padding="md" radius="md" withBorder>
           <Group justify="space-between" mb="xs">
-            <Text size="lg" fw={500}>{task.title}</Text>
+            <Text size="lg" fw={500}>
+              {task.title}
+            </Text>
             <Group>
-              <Badge color={statusColors[task.status]}>{task.status.replace('_', ' ')}</Badge>
-              <Badge color={task.priority === 'high' ? 'red' : task.priority === 'medium' ? 'yellow' : 'gray'}>
+              <TaskStatusBadge status={task.status} />
+              <Badge
+                color={
+                  task.priority === "high"
+                    ? "red"
+                    : task.priority === "medium"
+                    ? "yellow"
+                    : "gray"
+                }
+              >
                 {task.priority}
               </Badge>
               <Menu>
@@ -43,13 +62,23 @@ function TaskList({ tasks, isLoading, onUpdateTask, onDeleteTask }: TaskListProp
                 </Menu.Target>
                 <Menu.Dropdown>
                   <Menu.Label>Status</Menu.Label>
-                  <Menu.Item onClick={() => onUpdateTask(task.id, { status: 'pending' })}>
+                  <Menu.Item
+                    onClick={() => onUpdateTask(task.id, { status: "pending" })}
+                  >
                     Set Pending
                   </Menu.Item>
-                  <Menu.Item onClick={() => onUpdateTask(task.id, { status: 'in_progress' })}>
+                  <Menu.Item
+                    onClick={() =>
+                      onUpdateTask(task.id, { status: "in_progress" })
+                    }
+                  >
                     Set In Progress
                   </Menu.Item>
-                  <Menu.Item onClick={() => onUpdateTask(task.id, { status: 'completed' })}>
+                  <Menu.Item
+                    onClick={() =>
+                      onUpdateTask(task.id, { status: "completed" })
+                    }
+                  >
                     Set Completed
                   </Menu.Item>
                   <Menu.Divider />
@@ -63,7 +92,7 @@ function TaskList({ tasks, isLoading, onUpdateTask, onDeleteTask }: TaskListProp
           </Group>
           <Text size="sm">{task.description}</Text>
           <Text size="xs" c="dimmed" mt="xs">
-            Created {format(new Date(task.createdAt), 'PPp')}
+            Created {format(new Date(task.createdAt), "PPp")}
           </Text>
         </Card>
       ))}
@@ -71,4 +100,4 @@ function TaskList({ tasks, isLoading, onUpdateTask, onDeleteTask }: TaskListProp
   );
 }
 
-export default TaskList; 
+export default TaskList;

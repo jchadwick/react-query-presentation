@@ -13,6 +13,15 @@
   ],
   "tasks": [
     {
+      "id": "1",
+      "projectId": "1",
+      "title": "Design Homepage",
+      "description": "Create new homepage mockup",
+      "status": "pending",
+      "priority": "high",
+      "createdAt": "2024-03-20T10:00:00Z"
+    },
+    {
       "id": "2",
       "projectId": "1",
       "title": "Setup Analytics",
