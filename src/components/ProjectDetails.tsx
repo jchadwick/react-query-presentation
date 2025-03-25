@@ -1,8 +1,8 @@
 import { Button, Group, Skeleton, Stack, Title } from "@mantine/core";
 import { useEffect, useState } from "react";
 import * as api from "../lib/api";
+import { NewTask, Task, UpdatedTask } from "../types/types";
 import { useRecentTasks } from "./RecentTasks/useRecentTasks";
-import { Task } from "../types/types";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
 
@@ -38,9 +38,7 @@ function ProjectDetails({ projectId }: ProjectDetailsProps) {
     fetchTasks();
   }, [projectId]);
 
-  const handleCreateTask = async (
-    newTask: Omit<Task, "id" | "createdAt" | "updatedAt">
-  ) => {
+  const handleCreateTask = async (newTask: NewTask) => {
     try {
       const createdTask = await api.createTask(newTask);
       setTasks((prev) => [...prev, createdTask]);
@@ -51,7 +49,7 @@ function ProjectDetails({ projectId }: ProjectDetailsProps) {
     }
   };
 
-  const handleUpdateTask = async (id: string, updates: Partial<Task>) => {
+  const handleUpdateTask = async (id: string, updates: UpdatedTask) => {
     try {
       const updatedTask = await api.updateTask(id, updates);
       setTasks((prev) =>
