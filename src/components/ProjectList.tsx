@@ -1,7 +1,7 @@
 import { Card, Skeleton, Stack, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
-import * as api from "../api";
-import { Project } from "../types";
+import * as api from "../lib/api";
+import { Project } from "../types/types";
 
 interface ProjectListProps {
   selectedProject: Project | null;

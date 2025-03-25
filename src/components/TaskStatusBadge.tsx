@@ -1,5 +1,5 @@
 import { Badge } from "@mantine/core";
-import { TaskStatus } from "../types";
+import { TaskStatus } from "../types/types";
 
 const statusColors: Record<TaskStatus, string> = {
   pending: "yellow",

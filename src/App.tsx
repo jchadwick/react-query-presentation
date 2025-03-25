@@ -2,9 +2,9 @@ import { AppShell, Container, Grid, Title } from "@mantine/core";
 import { useState } from "react";
 import ProjectDetails from "./components/ProjectDetails";
 import ProjectList from "./components/ProjectList";
-import RecentTasksList from "./components/RecentTasksList";
-import { RecentTasksProvider } from "./contexts/RecentTasks";
-import { Project } from "./types";
+import RecentTasksList from "./components/RecentTasks/RecentTasksList";
+import { RecentTasksProvider } from "./components/RecentTasks/RecentTasksProvider";
+import { Project } from "./types/types";
 
 function App() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);

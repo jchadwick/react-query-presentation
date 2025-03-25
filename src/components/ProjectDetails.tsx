@@ -1,8 +1,8 @@
 import { Button, Group, Skeleton, Stack, Title } from "@mantine/core";
 import { useEffect, useState } from "react";
-import * as api from "../api";
-import { useRecentTasks } from "../contexts/RecentTasks";
-import { Task } from "../types";
+import * as api from "../lib/api";
+import { useRecentTasks } from "./RecentTasks/useRecentTasks";
+import { Task } from "../types/types";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
 

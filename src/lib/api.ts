@@ -1,5 +1,5 @@
 import axios from "axios";
-import { NewTask, Project, Task, UpdatedTask } from "./types";
+import { NewTask, Project, Task, UpdatedTask } from "../types/types";
 
 const api = axios.create({
   baseURL: "http://localhost:3001",

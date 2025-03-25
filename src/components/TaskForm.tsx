@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, Group, Select, TextInput, Textarea, Collapse, Paper } from '@mantine/core';
-import { Task, TaskPriority } from '../types';
+import { Task, TaskPriority } from '../types/types';
 
 interface TaskFormProps {
   projectId: string;

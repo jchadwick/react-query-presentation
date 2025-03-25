@@ -1,5 +1,5 @@
 import { PropsWithChildren, useState } from "react";
-import { Task } from "../../types";
+import { Task } from "../../types/types";
 import { MAX_RECENT_TASKS, RecentTasksContext } from "./RecentTasksContext";
 
 export function RecentTasksProvider({ children }: PropsWithChildren<unknown>) {

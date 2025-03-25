@@ -1,10 +1,10 @@
 import { Group, Paper, Stack, Text } from "@mantine/core";
 import { formatDistanceToNow } from "date-fns";
 import { useEffect, useState } from "react";
-import * as api from "../api";
-import { useRecentTasks } from "../contexts/RecentTasks";
-import { Project, Task } from "../types";
-import { TaskStatusBadge } from "./TaskStatusBadge";
+import * as api from "../../lib/api";
+import { Project, Task } from "../../types/types";
+import { TaskStatusBadge } from "../TaskStatusBadge";
+import { useRecentTasks } from "./useRecentTasks";
 
 function RecentTasksList() {
   const { recentTasks } = useRecentTasks();

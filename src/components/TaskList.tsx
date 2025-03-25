@@ -7,7 +7,7 @@ import {
   ActionIcon,
   Menu,
 } from "@mantine/core";
-import { Task } from "../types";
+import { Task } from "../types/types";
 import { format } from "date-fns";
 import { TaskStatusBadge } from "./TaskStatusBadge";
 

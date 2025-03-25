@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { Task } from "../../types";
+import { Task } from "../../types/types";
 
 export const MAX_RECENT_TASKS = 5;
 
