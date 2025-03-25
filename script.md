@@ -1,14 +1,57 @@
 # Converting a React App to React Query - Teaching Script
 
-## Introduction (2-3 minutes)
-"Today we're going to convert a traditional React application that uses useState and useEffect for data management to use React Query. Our example app is a task management system that currently uses local state, manual loading states, and explicit data fetching.
+## Demo App intro
+Let's take a look at the demo app.
 
-Before we start, let's understand why we're making this change. Our current app has several limitations:
-1. We're managing loading and error states manually
-2. We have no caching
-3. We're writing a lot of boilerplate for data fetching
-4. We have no automatic background updates
-5. We're managing server state in the same way as UI state
+[Run application: `npm start`]
+[Open in browser]
+
+It's a simple task management system with tasks grouped into "project" buckets.
+
+Notice that I've deliberately added a delay to all the network calls just so that the benefits of converting to React Query will be that much more obvious later.
+
+[Click on a Project]
+
+When I click on a project it loads that project's tasks.
+
+And then I can update their status...
+
+[Update task status]
+
+When I do that, two things happen: 
+
+1) the network call is made (and takes a few seconds) and the task status is eventually updated in the UI
+2) Whenever a task is modified it shows up in this "Recently Updated" task list in the sidebar
+
+This recently updated list is across all projects, so when I update a task in another project, that shows up, too.
+
+[ Select another Project, update a task status]
+
+We also have no caching at all, so when I navigate around the projects, the tasks are loaded fresh every time - even the ones we've already loaded.
+
+[ Select another Project, then the original Project ]
+
+## Code intro
+
+[ Open ProjectDetails.tsx ]
+
+Now if we jump into the code, we can see it's using just the native React hooks, mostly useState to store component-level state and useEffect to load data into the state.
+
+[ Highlight isLoading and error states ]
+
+It handles all the loading and error states with explicit state getter/setters.
+
+[ Go to definition of useRecentTasks ]
+
+It also uses context to manage that shared list of recent tasks.
+
+
+Our current app has several limitations:
+1. managing loading and error states manually
+2. no caching
+3. writing a lot of boilerplate for data fetching
+4. no automatic background updates
+5. managing server state in the same way as UI state
 
 ## Step 1: Setup (5 minutes)
 "First, let's set up React Query in our application. We already have it installed, but we need to configure the QueryClient and provider.
