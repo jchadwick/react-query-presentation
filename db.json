@@ -1,0 +1,43 @@
+{
+  "projects": [
+    {
+      "id": "1",
+      "name": "Website Redesign",
+      "description": "Modernize company website"
+    },
+    {
+      "id": "2",
+      "name": "Mobile App Development",
+      "description": "Build new mobile app"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "2",
+      "projectId": "1",
+      "title": "Setup Analytics",
+      "description": "Implement Google Analytics",
+      "status": "in_progress",
+      "priority": "medium",
+      "createdAt": "2024-03-20T11:00:00Z"
+    },
+    {
+      "id": "3",
+      "projectId": "2",
+      "title": "User Authentication",
+      "description": "Implement login/signup flow",
+      "status": "pending",
+      "priority": "high",
+      "createdAt": "2024-03-20T12:00:00Z"
+    },
+    {
+      "id": "4",
+      "projectId": "1",
+      "title": "New Awesome task",
+      "description": "This is really cool",
+      "priority": "low",
+      "status": "pending",
+      "createdAt": "2025-03-25T03:23:08.550Z"
+    }
+  ]
+}
