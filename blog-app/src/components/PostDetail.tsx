@@ -28,14 +28,14 @@ const PostDetail = () => {
     onSuccess: () => {
       // Invalidate and refetch posts list query
       queryClient.invalidateQueries({ queryKey: ["posts"] });
-      // Navigate back to the posts list
-      navigate("/");
     },
   });
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this post?")) {
-      deletePostMutation.mutate(postId);
+      await deletePostMutation.mutateAsync(postId);
+      // Navigate back to the posts list
+      navigate("/");
     }
   };
 

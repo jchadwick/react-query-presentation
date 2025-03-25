@@ -310,56 +310,6 @@
                     <li>Batch updates to avoid excessive re-renders</li>
                 </ul>
             </section>
-
-            <section id="common-mistakes">
-                <section>
-                    <h2>Common Mistakes</h2>
-                    <ul>
-                        <li>Confusing <code>staleTime</code> and <code>cacheTime</code></li>
-                        <li>Over-fetching data</li>
-                        <li>Not properly handling query keys</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h2>Confusing Stale Time and Cache Time</h2>
-                    <pre><code class="javascript">useQuery('data', fetchData, { staleTime: 5000, cacheTime: 30000 });</code></pre>
-                    <p><strong>Presenter Notes:</strong></p>
-                    <aside class="notes">
-                        Many developers confuse <code>staleTime</code> and <code>cacheTime</code>.
-                        <code>staleTime</code>
-                        controls when data becomes stale and triggers a refetch when accessed.
-                        <code>cacheTime</code> defines how long inactive data stays in memory before being garbage
-                        collected.
-                        Setting a low <code>staleTime</code> can lead to unnecessary refetching, while a high
-                        <code>cacheTime</code> can keep outdated data longer than needed.
-                    </aside>
-                </section>
-
-                <section>
-                    <h2>Over-Fetching Data</h2>
-                    <pre><code class="javascript">useQuery(['users', userId], () => fetchUserData(userId));</code></pre>
-                    <aside class="notes">
-                        Over-fetching occurs when queries fetch more data than necessary or refetch too frequently.
-                        Ensure that queries are optimized with proper keys and conditions.
-                        For example, using query keys effectively and leveraging pagination or infinite queries can
-                        prevent unnecessary large data loads.
-                    </aside>
-                </section>
-
-                <section>
-                    <h2>Not Properly Handling Query Keys</h2>
-                    <pre><code class="javascript">useQuery('user', fetchUser); // Bad example - lacks unique key</code></pre>
-                    <pre><code class="javascript">useQuery(['user', userId], () => fetchUser(userId)); // Good practice</code></pre>
-                    <aside class="notes">
-                        Using a generic query key like <code>'user'</code> means that React Query does not differentiate
-                        between different users.
-                        Instead, use dynamic query keys like <code>['user', userId]</code> to ensure each user's data is
-                        managed separately.
-                        This prevents unnecessary cache invalidation and ensures efficient data handling.
-                    </aside>
-                </section>
-            </section>
         </div>
     </div>
 

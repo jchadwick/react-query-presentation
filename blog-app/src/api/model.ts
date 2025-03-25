@@ -3,6 +3,8 @@ export interface Post {
   title: string;
   content: string;
   createdAt: string;
+  updatedAt: string;
+  author: string;
 }
 
 export interface NewPost {

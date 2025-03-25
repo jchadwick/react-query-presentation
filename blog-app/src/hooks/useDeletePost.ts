@@ -13,8 +13,6 @@ export const useDeletePost = () => {
     },
   });
 
-  queryClient.refetchQueries({ queryKey: [...postsKey()] });
-
   return {
     deletePost: deletePostMutation.mutateAsync,
     deletePostPending: deletePostMutation.isPending,
