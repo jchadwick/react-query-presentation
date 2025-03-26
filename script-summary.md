@@ -175,7 +175,7 @@ export const useTasks = () => {
       }, {} as Record<string, Task[]>);
 
       Object.entries(tasksByProject).forEach(([projectId, projectTasks]) => {
-        queryClient.setQueryData(projectTasksQueryKey(projectId), projectTasks);
+        queryClient.setQueryData(["projects", projectId, "tasks"], projectTasks);
       });
     }
   }, [query.data, queryClient]);
@@ -193,12 +193,13 @@ export function useRecentTasks() {
   const queryClient = useQueryClient();
 
   const isProjectTasksQuery = (query: Query) =>
+    // query key matches ["projects", <project id>, "tasks"]
     query.queryKey[0] === "projects" && query.queryKey[2] === "tasks";
 
   useEffect(() => {
     const unsubscribe = queryClient.getQueryCache().subscribe((event) => {
       if (event.type === "updated" && isProjectTasksQuery(event.query)) {
-        queryClient.invalidateQueries({ queryKey: ["recentTasks"] });
+        queryClient.invalidateQueries({ queryKey: ["recent-tasks"] });
       }
     });
 
@@ -206,18 +207,19 @@ export function useRecentTasks() {
   }, [queryClient]);
 
   const query = useQuery({
-    queryKey: ["recentTasks"],
+    queryKey: ["recent-tasks"],
     queryFn: () =>
       queryClient
         .getQueryCache()
-        .findAll({ predicate: isProjectTasksQuery })
-        .flatMap((query) => query.state.data as Task[])
-        .filter((task) => !!task.updatedAt)
+        .findAll({ predicate: isProjectTasksQuery })  // find all cached project tasks
+        .flatMap((query) => query.state.data as Task[]) // squash them into one array
+        .filter((task) => !!task.updatedAt) // only get the ones that have been updated
         .sort(
           (a, b) =>
+            // sort by updated time (desc)
             new Date(b.updatedAt!).getTime() - new Date(a.updatedAt!).getTime()
         )
-        .slice(0, 5),
+        .slice(0, 5),  // get the 5 most recent
   });
 
   return {
