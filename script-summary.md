@@ -1,6 +1,7 @@
 # React Query Conversion Guide - Summary
 
-## Demo App Overview
+## Demo App Overview 
+- [Run app, click around]
 - Simple task management system with projects containing tasks
 - Network calls have intentional delay to demonstrate React Query benefits
 - Features:
@@ -10,6 +11,7 @@
   - No caching implementation initially
 
 ## Initial Problems
+- [/problems.html]
 - Manual loading and error state management
 - Direct data fetching in components
 - No data caching
@@ -35,6 +37,7 @@ function App() {
 ```
 
 ## Converting Data Fetching
+- [ ProjectDetails.tsx ]
 - Replace manual state management with React Query hooks
 - Basic query implementation:
 ```typescript
@@ -50,6 +53,7 @@ const {
 ```
 
 ## Using Suspense
+- [ ProjectList.tsx ]
 - Implementation using useSuspenseQuery:
 ```typescript
 function ProjectList({ selectedProject, onSelectProject }: ProjectListProps) {
@@ -91,6 +95,7 @@ function ProjectListLoader({
 ```
 
 ## Mutations Implementation
+- [ ProjectList.tsx ]
 - Basic mutation setup:
 ```typescript
 const createTaskMutation = useMutation({
@@ -126,6 +131,7 @@ const updateTaskMutation = useMutation({
 ```
 
 ## Custom Hooks Refactoring
+- [ Create src/hooks/useTasks.ts ]
 - Move query logic into custom hooks:
 ```typescript
 export const projectTasksQueryKey = (projectId: string) => [
@@ -138,6 +144,7 @@ export const useTasksByProjectId = (projectId: string) =>
   useQuery({
     queryKey: projectTasksQueryKey(projectId),
     queryFn: () => api.getTasks(projectId),
+    enabled: !!projectId,
   });
 
 export const useTaskMutators = (projectId: string) => {
@@ -178,6 +185,8 @@ export const useTasks = () => {
 ```
 
 ## Replacing Context with React Query
+- [ Remove RecentTasksProvider from App.tsx ]
+- [ Delete RecentTasksContext.ts and RecentTasksProvider.ts ]
 - Final implementation of recent tasks using React Query:
 ```typescript
 export function useRecentTasks() {
