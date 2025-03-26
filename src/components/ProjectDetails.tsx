@@ -25,7 +25,7 @@ function ProjectDetails({ projectId }: ProjectDetailsProps) {
 
         // only fetch tasks if projectId is valid
         if (projectId) {
-          const tasks = await api.getTasks(projectId);
+          const tasks = await api.getTasksByProjectId(projectId);
           setTasks(tasks);
         }
       } catch (err) {

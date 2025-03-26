@@ -20,13 +20,18 @@ export const getProject = async (id: string): Promise<Project> => {
   return data;
 };
 
-export const getTasks = async (projectId: string): Promise<Task[]> => {
+export const getTasks = async (params?: {
+  projectId?: string;
+}): Promise<Task[]> => {
   await mimicLatency();
   const { data } = await api.get("/tasks", {
-    params: { projectId },
+    params,
   });
   return data;
 };
+
+export const getTasksByProjectId = (projectId: string): Promise<Task[]> =>
+  getTasks({ projectId });
 
 export const createTask = async (task: NewTask): Promise<Task> => {
   await mimicLatency();
