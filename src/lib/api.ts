@@ -10,6 +10,7 @@ const mimicLatency = (ms = 1500) =>
 
 export const getProjects = async (): Promise<Project[]> => {
   await mimicLatency();
+  console.log("retrieving projects...");
   const { data } = await api.get("/projects");
   return data;
 };
