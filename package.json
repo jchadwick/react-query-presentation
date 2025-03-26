@@ -3,7 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "md-to-html": "markdown-to-html -s script-summary.md -o notes.html",
+    "open:demo": "open http://localhost:5173/",
+    "open:presentation": "open http://localhost:8080",
+    "open:notes": "open http://localhost:8080/notes.html",
+    "server": "http-server -o",
+    "start": "run-p md-to-html open:* server"
   },
   "keywords": [],
   "author": "",
@@ -12,5 +18,9 @@
   "dependencies": {
     "reveal.js": "^5.1.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "markdown-to-html-cli": "^5.0.3",
+    "npm-run-all": "^4.1.5"
+  }
 }

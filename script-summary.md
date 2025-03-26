@@ -1,5 +1,10 @@
 # React Query Conversion Guide - Summary
 
+## Intro
+- I'm going to show you how to use React Query to simplify data fetching and state management in your React applications.
+- I'll start out with a few slides just to flesh out the simple concepts first
+- Then I'll switch over to code and show you how to convert a React application to use React Query
+
 ## Demo App Overview 
 - [Run app, click around]
 - Simple task management system with projects containing tasks
