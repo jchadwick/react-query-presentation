@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "md-to-html": "markdown-to-html -s script-summary.md -o notes.html",
+    "md-to-html": "markdown-to-html -s notes.md -o notes.html",
     "open:demo": "open http://localhost:5173/",
     "open:presentation": "open http://localhost:8080",
     "open:notes": "open -a safari http://localhost:8080/notes.html",

@@ -4,6 +4,8 @@
 - I'm going to show you how to use React Query to simplify data fetching and state management in your React applications.
 - I'll start out with a few slides just to flesh out the simple concepts first
 - Then I'll switch over to code and show you how to convert a React application to use React Query
+- As usual, I am packing a lot of information into this hour so please hold your questions
+- If you do want to talk about this more I'll be at the next Developer Office Hours so come ask them there!
 
 ## Demo App Overview 
 - [Run app, click around]
