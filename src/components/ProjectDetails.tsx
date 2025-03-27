@@ -1,8 +1,7 @@
 import { Button, Group, Skeleton, Stack, Title } from "@mantine/core";
-import { useEffect, useState } from "react";
-import * as api from "../lib/api";
-import { NewTask, Task, UpdatedTask } from "../types/types";
-import { useRecentTasks } from "./RecentTasks/useRecentTasks";
+import { useState } from "react";
+import { useTasksByProjectId } from "../hooks/useTasks";
+import { NewTask } from "../types/types";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
 
@@ -11,63 +10,17 @@ interface ProjectDetailsProps {
 }
 
 function ProjectDetails({ projectId }: ProjectDetailsProps) {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
   const [showTaskForm, setShowTaskForm] = useState(false);
-  const { onTaskUpdated } = useRecentTasks();
-
-  // Fetch tasks when project changes
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        setIsLoading(true);
-
-        // only fetch tasks if projectId is valid
-        if (projectId) {
-          const tasks = await api.getTasksByProjectId(projectId);
-          setTasks(tasks);
-        }
-      } catch (err) {
-        setError(err as Error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchTasks();
-  }, [projectId]);
+  const {
+    query: { data: tasks, isLoading, error },
+    createTaskMutation,
+    updateTaskMutation,
+    deleteTaskMutation,
+  } = useTasksByProjectId(projectId);
 
   const handleCreateTask = async (newTask: NewTask) => {
-    try {
-      const createdTask = await api.createTask(newTask);
-      setTasks((prev) => [...prev, createdTask]);
-      onTaskUpdated(createdTask);
-      setShowTaskForm(false);
-    } catch (err) {
-      setError(err as Error);
-    }
-  };
-
-  const handleUpdateTask = async (updated: UpdatedTask) => {
-    try {
-      const updatedTask = await api.updateTask(updated.id, updated);
-      setTasks((prev) =>
-        prev.map((task) => (task.id === updated.id ? updatedTask : task))
-      );
-      onTaskUpdated(updatedTask);
-    } catch (err) {
-      setError(err as Error);
-    }
-  };
-
-  const handleDeleteTask = async (id: string) => {
-    try {
-      await api.deleteTask(id);
-      setTasks((prev) => prev.filter((task) => task.id !== id));
-    } catch (err) {
-      setError(err as Error);
-    }
+    await createTaskMutation.mutateAsync(newTask);
+    setShowTaskForm(false);
   };
 
   if (error) {
@@ -99,9 +52,9 @@ function ProjectDetails({ projectId }: ProjectDetailsProps) {
         show={showTaskForm}
       />
       <TaskList
-        tasks={tasks}
-        onUpdateTask={handleUpdateTask}
-        onDeleteTask={handleDeleteTask}
+        tasks={tasks || []}
+        onUpdateTask={updateTaskMutation.mutateAsync}
+        onDeleteTask={deleteTaskMutation.mutateAsync}
       />
     </>
   );

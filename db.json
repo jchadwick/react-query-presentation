@@ -30,7 +30,7 @@
       "status": "completed",
       "priority": "high",
       "createdAt": "2024-03-20T10:00:00Z",
-      "updatedAt": "2025-03-25T19:44:10.939Z"
+      "updatedAt": "2025-03-27T14:38:14.649Z"
     },
     {
       "id": "2",
@@ -39,16 +39,18 @@
       "description": "Implement Google Analytics",
       "status": "in_progress",
       "priority": "medium",
-      "createdAt": "2024-03-20T11:00:00Z"
+      "createdAt": "2024-03-20T11:00:00Z",
+      "updatedAt": "2025-03-27T14:44:09.326Z"
     },
     {
       "id": "3",
       "projectId": "1",
       "title": "Optimize Images",
       "description": "Compress and optimize all website images",
-      "status": "pending",
+      "status": "completed",
       "priority": "low",
-      "createdAt": "2024-03-21T09:00:00Z"
+      "createdAt": "2024-03-21T09:00:00Z",
+      "updatedAt": "2025-03-27T14:43:52.196Z"
     },
     {
       "id": "4",
@@ -57,7 +59,8 @@
       "description": "Implement login/signup flow",
       "status": "pending",
       "priority": "high",
-      "createdAt": "2024-03-20T12:00:00Z"
+      "createdAt": "2024-03-20T12:00:00Z",
+      "updatedAt": "2025-03-27T14:24:21.664Z"
     },
     {
       "id": "5",

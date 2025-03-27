@@ -1,7 +1,9 @@
 import { Card, Skeleton, Stack, Text } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { Suspense } from "react";
 import * as api from "../lib/api";
 import { Project } from "../types/types";
+import { useTasks } from "../hooks/useTasks";
 
 interface ProjectListProps {
   selectedProject: Project | null;
@@ -9,41 +11,34 @@ interface ProjectListProps {
 }
 
 function ProjectList({ selectedProject, onSelectProject }: ProjectListProps) {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
-
-  // Fetch projects on mount
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        setIsLoading(true);
-        const projects = await api.getProjects();
-        setProjects(projects);
-      } catch (err) {
-        setError(err as Error);
-        console.error("Error fetching projects:", err);
-      } finally {
-        setIsLoading(false);
+  useTasks(); // prefetch tasks
+  
+  return (
+    <Suspense
+      fallback={
+        <Stack>
+          <Skeleton height={100} radius="md" />
+          <Skeleton height={100} radius="md" />
+          <Skeleton height={100} radius="md" />
+        </Stack>
       }
-    };
+    >
+      <ProjectListLoader
+        selectedProject={selectedProject}
+        onSelectProject={onSelectProject}
+      />
+    </Suspense>
+  );
+}
 
-    fetchProjects();
-  }, []);
-
-  if (error) {
-    return <div>Error loading projects: {error.message}</div>;
-  }
-
-  if (isLoading) {
-    return (
-      <Stack>
-        <Skeleton height={100} radius="md" />
-        <Skeleton height={100} radius="md" />
-        <Skeleton height={100} radius="md" />
-      </Stack>
-    );
-  }
+function ProjectListLoader({
+  selectedProject,
+  onSelectProject,
+}: ProjectListProps) {
+  const { data: projects } = useSuspenseQuery({
+    queryKey: ["projects"],
+    queryFn: () => api.getProjects(),
+  });
 
   return (
     <ProjectListView
